@@ -7,16 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
             image.classList.add("selected");
 
             const selectedImage = image.dataset.image;
-            localStorage.setItem("selectedImage", selectedImage);
 
-            // Simulatie van data naar server sturen via een POST request
-            fetch('/save_choice', {
+            // Verstuur de keuze naar het PostgreSQL API-endpoint
+            fetch('/api/save_to_pg', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ choice: selectedImage })
-            });
+            }).then(response => response.json())
+              .then(data => console.log(data))
+              .catch(error => console.error('Error:', error));
 
             // Doorverwijzen naar de bedankt-pagina
             window.location.href = "thanks.html";
